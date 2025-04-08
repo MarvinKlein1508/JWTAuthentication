@@ -9,10 +9,12 @@ namespace WebApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly DataAccess _dataAccess;
+    private readonly TokenProvider _tokenProvider;
 
-    public AuthController(DataAccess dataAccess)
+    public AuthController(DataAccess dataAccess, TokenProvider tokenProvider)
     {
         _dataAccess = dataAccess;
+        _tokenProvider = tokenProvider;
     }
 
     [HttpPost("register")]
@@ -29,6 +31,33 @@ public class AuthController : ControllerBase
         {
             return BadRequest();
         }
+    }
 
+    [HttpPost]
+    public ActionResult<AuthResponse> Login(AuthRequest request)
+    {
+        AuthResponse response = new AuthResponse();
+
+        var user = _dataAccess.FindUserByEmail(request.Email);
+        if (user is null)
+        {
+            return BadRequest("User is not found");
+        }
+
+        var verifyPassword = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
+
+        if (!verifyPassword)
+        {
+            return BadRequest("Invalid password");
+        }
+
+
+        // Generate Access token
+        var token = _tokenProvider.GenerateToken(user);
+        response.AccessToken = token.AccessToken;
+
+        // Generate Refresh token
+
+        return response;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using WebApi.Models;
 
 namespace WebApi.Infrastructure;
 
@@ -26,6 +27,13 @@ public class DataAccess : IDisposable
         var result = _connection.Execute(sql, new { Email = email, Password = password, Role = role });
 
         return result > 0;
+    }
+
+    public User? FindUserByEmail(string email)
+    {
+        string sql = "SELECT * FROM Users WHERE Email = @Email";
+        var user = _connection.QueryFirstOrDefault<User>(sql, new { Email = email });
+        return user;
     }
 
     public void Dispose()

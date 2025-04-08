@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using System.Text;
 using WebApi.Infrastructure;
 
@@ -9,7 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer(async (document, context, cancellationToken) =>
+    {
+        var securityScheme = new OpenApiSecurityScheme();
+        securityScheme.Type = SecuritySchemeType.Http;
+        securityScheme.Name = "Authorization";
+        securityScheme.Scheme = JwtBearerDefaults.AuthenticationScheme;
+        securityScheme.In = ParameterLocation.Header;
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes.Add(key: "Authorization", securityScheme);
+    });
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -26,6 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddScoped<DataAccess>();
+builder.Services.AddScoped<TokenProvider>();
 
 var app = builder.Build();
 
@@ -33,10 +49,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options =>
+    app.MapScalarApiReference(options =>
     {
-        options.SwaggerEndpoint("/openapi/v1.json", "WebApi");
-        
+        options.WithClientButton(false);
+        options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });
 }
 
