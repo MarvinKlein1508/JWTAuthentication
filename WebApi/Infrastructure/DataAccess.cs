@@ -35,6 +35,46 @@ public class DataAccess : IDisposable
         var user = _connection.QueryFirstOrDefault<User>(sql, new { Email = email });
         return user;
     }
+    public bool InsertRefreshToken(RefreshToken refreshToken, string email)
+    {
+        string sql = "INSERT INTO RefreshTokens (Token, CreatedDate, Expires, IsEnabled, Email) VALUES (@Token, @CreatedDate, @Expires, @IsEnabled, @Email)";
+        var result = _connection.Execute(sql, new { Token = refreshToken.Token, CreatedDate = refreshToken.CreatedDate, Expires = refreshToken.Expires, IsEnabled = refreshToken.IsEnabled, Email = email });
+        return result > 0;
+    }
+
+    public bool DisableUserTokenByEmail(string email)
+    {
+        string sql = "UPDATE RefreshTokens SET IsEnabled = 0 WHERE Email = @Email";
+        var result = _connection.Execute(sql, new { Email = email });
+        return result > 0;
+    }   
+    public bool DisableUserToken(string token)
+    {
+        string sql = "UPDATE RefreshTokens SET IsEnabled = 0 WHERE Token = @Token";
+        var result = _connection.Execute(sql, new { Token = token });
+        return result > 0;
+    }
+
+    public bool IsRefreshTokenValid(string token)
+    {
+        string sql = "SELECT COUNT(1) FROM RefreshTokens WHERE Token = @Token AND IsEnabled = 1 AND Expires >= CAST(GETDATE() AS DATE)";
+        var result = _connection.ExecuteScalar<int>(sql, new { Token = token });
+        return result > 0;
+    }
+
+    public User? FindUserByToken(string token)
+    {
+        string sql =
+            """
+            SELECT * FROM RefreshTokens RT
+            JOIN Users U ON (U.Email = RT.Email)
+            WHERE RT.Token = @Token
+            """;
+        
+        var user = _connection.QueryFirstOrDefault<User>(sql, new { Token = token });
+
+        return user;
+    }
 
     public void Dispose()
     {

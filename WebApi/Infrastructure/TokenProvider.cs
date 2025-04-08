@@ -18,13 +18,26 @@ public class TokenProvider
     public Token GenerateToken(User user)
     {
         var accessToken = GenerateAccessToken(user);
-
+        var refreshToken = GenerateRefreshToken();
         return new Token
         {
-            AccessToken = accessToken
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
         };
     }
 
+    private RefreshToken GenerateRefreshToken()
+    {
+        var refreshToken = new RefreshToken
+        {
+            Token = Guid.NewGuid().ToString(),
+            Expires = DateTime.Now.AddMonths(1),
+            CreatedDate = DateTime.Now,
+            IsEnabled = true
+        };
+
+        return refreshToken;
+    }
     private string GenerateAccessToken(User user)
     {
         string secretKey = _configuration["Jwt:SecretKey"]!;
@@ -54,4 +67,6 @@ public class TokenProvider
 public class Token
 {
     public string AccessToken { get; set; }
+
+    public RefreshToken RefreshToken { get; set; }
 }
