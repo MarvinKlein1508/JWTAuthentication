@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		db_script.sql = db_script.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServer", "BlazorServer\BlazorServer.csproj", "{062464A6-E67E-4D45-BDBE-E6B1BA7D8E49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{EAFB505A-239C-4BE4-8CE1-CE0B48392CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAFB505A-239C-4BE4-8CE1-CE0B48392CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAFB505A-239C-4BE4-8CE1-CE0B48392CCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{062464A6-E67E-4D45-BDBE-E6B1BA7D8E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062464A6-E67E-4D45-BDBE-E6B1BA7D8E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062464A6-E67E-4D45-BDBE-E6B1BA7D8E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062464A6-E67E-4D45-BDBE-E6B1BA7D8E49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
