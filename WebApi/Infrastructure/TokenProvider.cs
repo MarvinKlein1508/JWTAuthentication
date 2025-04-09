@@ -51,7 +51,7 @@ public class TokenProvider
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             ]),
-            Expires = DateTime.Now.AddMinutes(1),
+            Expires = DateTime.Now.AddSeconds(15),
             SigningCredentials = credentials,
             Issuer = _configuration["Jwt:Issuer"],
             Audience = _configuration["Jwt:Audience"]

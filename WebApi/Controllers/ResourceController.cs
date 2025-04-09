@@ -5,11 +5,11 @@ namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RessourceController : ControllerBase
+public class ResourceController : ControllerBase
 {
     [Authorize]
     [HttpGet]
-    [Route("verfiy")]
+    [Route("verify")]
     public ActionResult Verify()
     {
         return Ok("You are authorized");

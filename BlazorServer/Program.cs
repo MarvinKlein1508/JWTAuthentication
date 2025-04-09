@@ -14,6 +14,7 @@ builder.Services.AddScoped<AccessTokenService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ApiService>();
 builder.Services.AddScoped<RefreshTokenService>();
+builder.Services.AddScoped<ResourceService>();
 builder.Services.AddHttpClient("ApiClient", options =>
 {
     options.BaseAddress = new Uri("https://localhost:7102/api/");
