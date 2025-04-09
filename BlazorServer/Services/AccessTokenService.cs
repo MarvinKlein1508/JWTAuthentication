@@ -3,7 +3,7 @@
 public class AccessTokenService
 {
     private readonly CookieService _cookieService;
-    private const string TOKEN_KEY = "access_token";
+    public const string TOKEN_KEY = "access_token";
     public AccessTokenService(CookieService cookieService)
     {
         _cookieService = cookieService;

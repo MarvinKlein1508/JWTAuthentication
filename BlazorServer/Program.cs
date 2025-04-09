@@ -1,5 +1,7 @@
 ﻿using BlazorServer.Components;
+using BlazorServer.Security;
 using BlazorServer.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,11 @@ builder.Services.AddHttpClient("ApiClient", options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication()
+    .AddScheme<CustomOption, JWTAuthenticationHandler>("JWTAuth", options => { });
+
+builder.Services.AddScoped<JWTAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, JWTAuthenticationStateProvider>();
 builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
