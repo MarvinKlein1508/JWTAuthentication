@@ -3,12 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Text;
-using WebApi.Application.Infrastructure;
 using WebApi.Infrastructure;
+using WebApi.Application.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+var config = builder.Configuration;
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -16,7 +15,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = null;
     });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer(async (document, context, cancellationToken) =>
@@ -38,15 +37,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.RequireHttpsMetadata = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!)),
-            ValidIssuer = builder.Configuration["JWT:Issuer"],
-            ValidAudience = builder.Configuration["JWT:Audience"],  
-            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!)),
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],  
         };
     });
 
 builder.Services.AddScoped<DataAccess>();
-builder.Services.AddScoped<TokenProvider>();
+builder.Services.AddApiServices(config);
 
 var app = builder.Build();
 

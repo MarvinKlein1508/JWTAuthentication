@@ -1,20 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using WebApi.Application.Models;
+using WebApi.Application.Options;
 
 namespace WebApi.Application.Infrastructure;
 
-public class TokenProvider
+public class TokenProvider(IOptions<JwtOptions> jwtOptions)
 {
-    private readonly IConfiguration _configuration;
-
-    public TokenProvider(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
     public Token GenerateToken(User user)
     {
@@ -32,8 +28,8 @@ public class TokenProvider
         var refreshToken = new RefreshToken
         {
             Token = Guid.NewGuid().ToString(),
-            Expires = DateTime.Now.AddMonths(1),
-            CreatedDate = DateTime.Now,
+            Expires = DateTime.UtcNow.AddMonths(1),
+            CreatedDate = DateTime.UtcNow,
             IsEnabled = true
         };
 
@@ -41,7 +37,7 @@ public class TokenProvider
     }
     private string GenerateAccessToken(User user)
     {
-        string secretKey = _configuration["Jwt:SecretKey"]!;
+        string secretKey = _jwtOptions.SecretKey;
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));  
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -52,10 +48,10 @@ public class TokenProvider
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             ]),
-            Expires = DateTime.Now.AddSeconds(15),
+            Expires = DateTime.UtcNow.AddMinutes(_jwtOptions.LifetimeInMinutes),
             SigningCredentials = credentials,
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"]
+            Issuer = _jwtOptions.Issuer,
+            Audience = _jwtOptions.Audience
         };
 
         var tokenHandler = new JsonWebTokenHandler();
