@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApi.DTO;
+using WebApi.Application.Infrastructure;
+using WebApi.Contracts.Requests;
+using WebApi.Contracts.Responses;
 using WebApi.Infrastructure;
-using WebApi.Models;
 
 namespace WebApi.Controllers;
 

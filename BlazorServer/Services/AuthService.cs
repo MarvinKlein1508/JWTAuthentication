@@ -1,7 +1,6 @@
-﻿using BlazorServer.DTO;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using WebApi.Contracts.Responses;
 
 namespace BlazorServer.Services;
 

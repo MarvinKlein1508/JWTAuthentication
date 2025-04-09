@@ -1,4 +1,4 @@
-﻿namespace WebApi.DTO;
+﻿namespace WebApi.Contracts.Responses;
 
 public class AuthResponse
 {

@@ -16,7 +16,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Extensions\" />
+	  <ProjectReference Include="..\WebApi.Application\WebApi.Application.csproj" />
+	  <ProjectReference Include="..\WebApi.Contracts\WebApi.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

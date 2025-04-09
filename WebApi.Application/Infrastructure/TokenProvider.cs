@@ -1,10 +1,11 @@
-﻿using Microsoft.IdentityModel.JsonWebTokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
-using WebApi.Models;
+using WebApi.Application.Models;
 
-namespace WebApi.Infrastructure;
+namespace WebApi.Application.Infrastructure;
 
 public class TokenProvider
 {

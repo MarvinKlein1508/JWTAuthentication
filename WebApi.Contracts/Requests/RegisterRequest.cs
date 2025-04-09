@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.DTO;
+namespace WebApi.Contracts.Requests;
 
 public class RegisterRequest
 {
