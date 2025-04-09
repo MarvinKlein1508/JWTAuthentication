@@ -34,4 +34,10 @@ public class AuthService
             return false;
         }
     }
+
+    public async Task Logout()
+    {
+        await _accessTokenService.RemoveToken();
+        _navigationManager.NavigateTo("/login");
+    }
 }
