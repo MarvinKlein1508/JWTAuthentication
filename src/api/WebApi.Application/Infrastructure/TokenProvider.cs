@@ -67,7 +67,6 @@ public class TokenProvider
 
 public class Token
 {
-    public string AccessToken { get; set; }
-
-    public RefreshToken RefreshToken { get; set; }
+    public required string AccessToken { get; set; }
+    public required RefreshToken RefreshToken { get; set; }
 }
