@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="db_script.sql" />
+  </Folder>
+  
+   <Folder Name="/src/">
+	<Project Path="src/BlazorServer/BlazorServer.csproj" />
+  </Folder>
+  
+  <Folder Name="/src/api/">
+	<Project Path="src/api/WebApi.Application/WebApi.Application.csproj" />
+	<Project Path="src/api/WebApi.Contracts/WebApi.Contracts.csproj" />
+	<Project Path="src/api/WebApi/WebApi.csproj" />
+  </Folder>
+  
+</Solution>
